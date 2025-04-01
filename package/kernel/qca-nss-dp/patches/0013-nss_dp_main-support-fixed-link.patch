@@ -1,16 +1,24 @@
 From 309a1a330ccaa103a7648e944d97a0032116b338 Mon Sep 17 00:00:00 2001
-From: hzy <hzyitc@outlook.com>
+From: Ziyang Huang <hzyitc@outlook.com>
 Date: Mon, 22 Apr 2024 21:50:39 +0800
 Subject: [PATCH] nss_dp_main: support fixed-link
 
-Signed-off-by: hzy <hzyitc@outlook.com>
+Add support for "fixed link" to support ethernet MACs which are not 
+connected to an MDIO managed PHY. For example, IPQ5018 has two internal 
+MACs, one connected to a GE PHY and the other connected to a Uniphy to 
+support connections to an external switch over a fixed link. As such, 
+check for a fixed link in absence of a phy-handle and return an error 
+when no phy-handle and fixed link is found.
+
+Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
 ---
  nss_dp_main.c | 15 ++++++++++++---
  1 file changed, 12 insertions(+), 3 deletions(-)
 
 --- a/nss_dp_main.c
 +++ b/nss_dp_main.c
-@@ -646,11 +646,20 @@ static int32_t nss_dp_of_get_pdata(struc
+@@ -674,11 +674,20 @@ static int32_t nss_dp_of_get_pdata(struc
  	}
  
  	dp_priv->phy_node = of_parse_phandle(np, "phy-handle", 0);

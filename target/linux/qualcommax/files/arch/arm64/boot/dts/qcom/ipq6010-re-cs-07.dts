@@ -3,6 +3,7 @@
 /dts-v1/;
 
 #include "ipq6018.dtsi"
+#include "ipq6018-common.dtsi"
 #include "ipq6018-ess.dtsi"
 #include "ipq6018-nss.dtsi"
 
@@ -46,17 +47,17 @@
 	leds {
 		compatible = "gpio-leds";
 
-		led_status_red: red {
+		led_status_red: status-red {
 			label = "red:status";
 			gpios = <&tlmm 57 GPIO_ACTIVE_HIGH>;
 		};
 
-		led_status_green: green {
+		led_status_green: status-green {
 			label = "green:status";
 			gpios = <&tlmm 58 GPIO_ACTIVE_HIGH>;
 		};
 
-		led_status_blue: blue {
+		led_status_blue: status-blue {
 			label = "blue:status";
 			gpios = <&tlmm 79 GPIO_ACTIVE_HIGH>;
 		};
@@ -108,7 +109,7 @@
 	pinctrl-names = "default";
 };
 
-&sdhc_1 {
+&sdhc {
 	status = "okay";
 
 	/delete-property/ mmc-hs400-1_8v;
@@ -212,71 +213,5 @@
 };
 
 &edma {
-	status = "okay";
-};
-
-&CPU0 {
-	/delete-property/ cpu-supply;
-};
-
-&CPU1 {
-	/delete-property/ cpu-supply;
-};
-
-&CPU2 {
-	/delete-property/ cpu-supply;
-};
-
-&CPU3 {
-	/delete-property/ cpu-supply;
-};
-
-&rpm {
-	status = "disabled";
-};
-
-&blsp1_uart3 {
-	status = "okay";
-	pinctrl-0 = <&serial_3_pins>;
-	pinctrl-names = "default";
-};
-
-&crypto {
-	status = "okay";
-};
-
-&cryptobam {
-	status = "okay";
-};
-
-&pcie_phy {
-	status = "okay";
-};
-
-&prng {
-	status = "okay";
-};
-
-&qpic_bam {
-	status = "okay";
-};
-
-&qusb_phy_0 {
-	status = "okay";
-};
-
-&qusb_phy_1 {
-	status = "okay";
-};
-
-&ssphy_0 {
-	status = "okay";
-};
-
-&usb2 {
-	status = "okay";
-};
-
-&usb3 {
 	status = "okay";
 };

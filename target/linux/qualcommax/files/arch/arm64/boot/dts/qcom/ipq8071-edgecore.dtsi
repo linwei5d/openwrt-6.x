@@ -2,6 +2,7 @@
 
 #include "ipq8074.dtsi"
 #include "ipq8074-ac-cpu.dtsi"
+#include "ipq8074-common.dtsi"
 #include "ipq8074-ess.dtsi"
 #include "ipq8074-nss.dtsi"
 
@@ -19,10 +20,10 @@
 		led-running = &led_pw;
 		led-upgrade = &led_pw;
 
-		ethernet0 = &dp6;
-		ethernet1 = &dp5;
+		ethernet4 = &dp5;
+		ethernet5 = &dp6;
 
-		label-mac-device = &dp5;
+		label-mac-device = &dp6;
 	};
 
 	chosen {
@@ -35,8 +36,22 @@
 
 		reset {
 			label = "reset";
-			gpios = <&tlmm 66 GPIO_ACTIVE_LOW>;
 			linux,code = <KEY_RESTART>;
+			gpios = <&tlmm 66 GPIO_ACTIVE_LOW>;
+		};
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		led_2g: led-2g {
+			label = "2g:status";
+			gpios = <&tlmm 47 GPIO_ACTIVE_HIGH>;
+		};
+
+		led_5g: led-5g {
+			label = "5g:status";
+			gpios = <&tlmm 48 GPIO_ACTIVE_HIGH>;
 		};
 	};
 };
@@ -110,23 +125,6 @@
 			port_mac_sel = "QGMAC_PORT";
 		};
 	};
-};
-
-&dp5 {
-	status = "okay";
-	phy-handle = <&qca8081_24>;
-	label = "lan";
-};
-
-&dp6 {
-	status = "okay";
-	phy-handle = <&qca8081_28>;
-	label = "wan";
-};
-
-&wifi {
-	status = "okay";
-	qcom,ath11k-fw-memory-mode = <1>;
 };
 
 &edma {

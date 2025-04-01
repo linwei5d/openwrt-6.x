@@ -2,10 +2,12 @@
 
 /dts-v1/;
 
-#include "ipq8074-512m.dtsi"
+#include "ipq8074.dtsi"
 #include "ipq8074-ac-cpu.dtsi"
+#include "ipq8074-common.dtsi"
 #include "ipq8074-ess.dtsi"
 #include "ipq8074-nss.dtsi"
+
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/leds/common.h>
@@ -16,10 +18,12 @@
 
 	aliases {
 		serial0 = &blsp1_uart5;
+
 		led-boot = &led_power;
 		led-failsafe = &led_power;
 		led-running = &led_power;
 		led-upgrade = &led_power;
+
 		label-mac-device = &dp6_syn;
 	};
 
@@ -30,8 +34,6 @@
 
 	keys {
 		compatible = "gpio-keys";
-		pinctrl-0 = <&button_pins>;
-		pinctrl-names = "default";
 
 		wps {
 			label = "wps";
@@ -58,20 +60,13 @@
 };
 
 &tlmm {
-	button_pins: button_pins {
-		mux {
-			pins = "gpio37", "gpio46";
-			function = "gpio";
-			drive-strength = <8>;
-			bias-pull-up;
-		};
-	};
-
 	i2c_pins: i2c-pins {
-		pins = "gpio21", "gpio22";
-		function = "blsp4_i2c1";
-		drive-strength = <8>;
-		bias-disable;
+		mux {
+			pins = "gpio21", "gpio22";
+			function = "blsp4_i2c1";
+			drive-strength = <8>;
+			bias-disable;
+		};
 	};
 
 	mdio_pins: mdio-pins {
@@ -90,7 +85,7 @@
 		};
 	};
 
-	usb_pwr_pins: usb_pwr_pins {
+	usb_pwr_pins: usb-pwr-pins {
 		mux {
 			pins = "gpio29";
 			function = "gpio";
@@ -102,10 +97,11 @@
 };
 
 &blsp1_spi1 {
+	status = "okay";
+
 	pinctrl-0 = <&spi_0_pins>;
 	pinctrl-names = "default";
 	cs-select = <0>;
-	status = "okay";
 
 	flash@0 {
 		compatible = "jedec,spi-nor";
@@ -247,26 +243,6 @@
 	};
 };
 
-&blsp1_uart5 {
-	status = "okay";
-};
-
-&cryptobam {
-	status = "okay";
-};
-
-&crypto {
-	status = "okay";
-};
-
-&prng {
-	status = "okay";
-};
-
-&qpic_bam {
-	status = "okay";
-};
-
 &qpic_nand {
 	status = "okay";
 
@@ -368,14 +344,6 @@
 	};
 };
 
-&qusb_phy_0 {
-	status = "okay";
-};
-
-&ssphy_0 {
-	status = "okay";
-};
-
 &usb_0 {
 	pinctrl-0 = <&usb_pwr_pins>;
 	pinctrl-names = "default";
@@ -406,10 +374,10 @@
 &switch {
 	status = "okay";
 
-	switch_lan_bmp = <ESS_PORT5>; /* lan port bitmap */
-	switch_wan_bmp = <ESS_PORT6>; /* wan port bitmap */
-	switch_mac_mode1 = <MAC_MODE_SGMII_PLUS>; /* mac mode for uniphy instance1*/
-	switch_mac_mode2 = <MAC_MODE_SGMII_PLUS>; /* mac mode for uniphy instance2*/
+	switch_lan_bmp = <ESS_PORT5>;
+	switch_wan_bmp = <ESS_PORT6>;
+	switch_mac_mode1 = <MAC_MODE_SGMII_PLUS>;
+	switch_mac_mode2 = <MAC_MODE_SGMII_PLUS>;
 
 	qcom,port_phyinfo {
 		port@5 {
@@ -417,6 +385,7 @@
 			phy_address = <24>;
 			port_mac_sel = "QGMAC_PORT";
 		};
+
 		port@6 {
 			port_id = <6>;
 			phy_address = <28>;
@@ -447,7 +416,6 @@
 
 &wifi {
 	status = "okay";
-
-	qcom,ath11k-calibration-variant = "ZTE-MF269";
 	qcom,ath11k-fw-memory-mode = <1>;
+	qcom,ath11k-calibration-variant = "ZTE-MF269";
 };

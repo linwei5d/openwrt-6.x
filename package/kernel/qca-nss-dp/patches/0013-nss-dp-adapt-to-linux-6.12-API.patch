@@ -12,7 +12,7 @@ Signed-off-by: Mantas Pucka <mantas@8devices.com>
 
 --- a/nss_dp_main.c
 +++ b/nss_dp_main.c
-@@ -34,6 +34,10 @@
+@@ -35,6 +35,10 @@
  #if (LINUX_VERSION_CODE > KERNEL_VERSION(6, 6, 0))
  #include <net/netdev_rx_queue.h>
  #endif
@@ -23,7 +23,7 @@ Signed-off-by: Mantas Pucka <mantas@8devices.com>
  #if defined(NSS_DP_MAC_POLL_SUPPORT)
  #include <init/ssdk_init.h>
  #endif
-@@ -496,14 +500,22 @@ static int nss_dp_rx_flow_steer(struct n
+@@ -524,14 +528,22 @@ static int nss_dp_rx_flow_steer(struct n
  	rxflow = &flow_table->flows[hash & flow_table->mask];
  	rxcpu = (uint32_t)rxflow->cpu;
  
@@ -46,7 +46,7 @@ Signed-off-by: Mantas Pucka <mantas@8devices.com>
  
  	if (rxcpu == rfscpu)
  		return 0;
-@@ -998,6 +1010,13 @@ static int nss_dp_remove(struct platform
+@@ -1058,6 +1070,13 @@ static int nss_dp_remove(struct platform
  	return 0;
  }
  
@@ -60,7 +60,7 @@ Signed-off-by: Mantas Pucka <mantas@8devices.com>
  static struct of_device_id nss_dp_dt_ids[] = {
  	{ .compatible = "qcom,nss-dp" },
  	{},
-@@ -1006,7 +1025,11 @@ MODULE_DEVICE_TABLE(of, nss_dp_dt_ids);
+@@ -1066,7 +1085,11 @@ MODULE_DEVICE_TABLE(of, nss_dp_dt_ids);
  
  static struct platform_driver nss_dp_drv = {
  	.probe = nss_dp_probe,

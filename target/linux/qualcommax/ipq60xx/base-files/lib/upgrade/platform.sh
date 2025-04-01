@@ -106,38 +106,18 @@ EOF
 
 platform_do_upgrade() {
 	case "$(board_name)" in
-	cmiot,ax18|\
-	zn,m2|\
-	qihoo,v6|\
-	redmi,ax5|\
-	xiaomi,ax1800|\
-	glinet,gl-axt1800|\
-	glinet,gl-ax1800|\
-	netgear,wax214)
-		nand_do_upgrade "$1"
-		;;
 	cambiumnetworks,xe3-4)
 		fw_setenv bootcount 0
 		nand_do_upgrade "$1"
 		;;
-	jdcloud,re-cs-07|\
-	redmi,ax5-jdcloud|\
-	jdcloud,re-ss-01|\
-	jdcloud,re-cs-02)
-	  CI_KERNPART="0:HLOS"
-	  CI_ROOTPART="rootfs"
-	  emmc_do_upgrade "$1"
-	  ;;
-	yuncore,fap650)
-		[ "$(fw_printenv -n owrt_env_ver 2>/dev/null)" != "7" ] && yuncore_fap650_env_setup
-		local active="$(fw_printenv -n owrt_slotactive 2>/dev/null)"
-		if [ "$active" = "1" ]; then
-			CI_UBIPART="rootfs"
-		else
-			CI_UBIPART="rootfs_1"
-		fi
-		fw_setenv owrt_bootcount 0
-		fw_setenv owrt_slotactive $((1 - active))
+	cmiot,ax18|\
+	redmi,ax5|\
+	xiaomi,ax1800|\
+	zn,m2|\
+	glinet,gl-ax1800|\
+	glinet,gl-axt1800|\
+	netgear,wax214|\
+	qihoo,360v6)
 		nand_do_upgrade "$1"
 		;;
 	linksys,mr7350)
@@ -154,6 +134,31 @@ platform_do_upgrade() {
 		fw_setenv auto_recovery yes
 		nand_do_upgrade "$1"
 		;;
+	tplink,eap610-outdoor)
+		tplink_do_upgrade "$1"
+		;;
+	yuncore,fap650)
+		[ "$(fw_printenv -n owrt_env_ver 2>/dev/null)" != "7" ] && yuncore_fap650_env_setup
+		local active="$(fw_printenv -n owrt_slotactive 2>/dev/null)"
+		if [ "$active" = "1" ]; then
+			CI_UBIPART="rootfs"
+		else
+			CI_UBIPART="rootfs_1"
+		fi
+		fw_setenv owrt_bootcount 0
+		fw_setenv owrt_slotactive $((1 - active))
+		nand_do_upgrade "$1"
+		;;
+	jdcloud,re-ss-01|\
+	jdcloud,re-cs-02|\
+	jdcloud,re-cs-07|\
+	link,nn6000-v1|\
+	link,nn6000-v2|\
+	redmi,ax5-jdcloud)
+		CI_KERNPART="0:HLOS"
+		CI_ROOTPART="rootfs"
+		emmc_do_upgrade "$1"
+		;;
 	*)
 		default_do_upgrade "$1"
 		;;
@@ -161,13 +166,14 @@ platform_do_upgrade() {
 }
 
 platform_copy_config() {
-  case "$(board_name)" in
-  jdcloud,re-ss-01|\
-  jdcloud,re-cs-02|\
-  jdcloud,re-cs-07|\
-  redmi,ax5-jdcloud)
-    emmc_copy_config
-    ;;
-  esac
+	case "$(board_name)" in
+	jdcloud,re-ss-01|\
+	jdcloud,re-cs-02|\
+	jdcloud,re-cs-07|\
+	link,nn6000-v1|\
+	link,nn6000-v2|\
+	redmi,ax5-jdcloud)
+		emmc_copy_config
+		;;
+	esac
 }
-

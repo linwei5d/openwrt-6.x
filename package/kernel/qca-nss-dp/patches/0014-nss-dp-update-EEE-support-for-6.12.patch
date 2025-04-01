@@ -142,7 +142,7 @@ Signed-off-by: Mantas Pucka <mantas@8devices.com>
  
  	port_eee_cfg.lpi_tx_enable = eee->tx_lpi_enabled;
  	port_eee_cfg.lpi_sleep_timer = eee->tx_lpi_timer;
-@@ -482,8 +550,10 @@ struct ethtool_ops nss_dp_ethtool_ops =
+@@ -475,8 +543,10 @@ struct ethtool_ops nss_dp_ethtool_ops =
  #endif
  	.get_pauseparam = &nss_dp_get_pauseparam,
  	.set_pauseparam = &nss_dp_set_pauseparam,

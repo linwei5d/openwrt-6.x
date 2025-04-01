@@ -40,13 +40,15 @@ xiaomi_initial_setup()
 		return 0
 	fi
 
-	fw_setenv boot_wait on
-	fw_setenv uart_en 1
-	fw_setenv flag_boot_rootfs 0
-	fw_setenv flag_last_success 1
-	fw_setenv flag_boot_success 1
-	fw_setenv flag_try_sys1_failed 8
-	fw_setenv flag_try_sys2_failed 8
+	fw_setenv -s - <<-EOF
+		boot_wait on
+		uart_en 1
+		flag_boot_rootfs 0
+		flag_last_success 1
+		flag_boot_success 1
+		flag_try_sys1_failed 8
+		flag_try_sys2_failed 8
+	EOF
 
 	local board=$(board_name)
 	case "$board" in
@@ -65,10 +67,12 @@ platform_do_upgrade() {
 
 	case "$board" in
 	abt,asr3000|\
+	asus,zenwifi-bt8-ubootmod|\
 	bananapi,bpi-r3|\
 	bananapi,bpi-r3-mini|\
 	bananapi,bpi-r4|\
 	bananapi,bpi-r4-poe|\
+	cmcc,a10-ubootmod|\
 	cmcc,rax3000m|\
 	gatonetworks,gdsp|\
 	h3c,magic-nx30-pro|\
@@ -113,7 +117,8 @@ platform_do_upgrade() {
 		;;
 	asus,rt-ax59u|\
 	asus,tuf-ax4200|\
-	asus,tuf-ax6000)
+	asus,tuf-ax6000|\
+	asus,zenwifi-bt8)
 		CI_UBIPART="UBI_DEV"
 		CI_KERNPART="linux"
 		nand_do_upgrade "$1"
@@ -187,6 +192,7 @@ platform_check_image() {
 	[ "$#" -gt 1 ] && return 1
 
 	case "$board" in
+	asus,zenwifi-bt8-ubootmod|\
 	bananapi,bpi-r3|\
 	bananapi,bpi-r3-mini|\
 	bananapi,bpi-r4|\
@@ -258,7 +264,8 @@ platform_pre_upgrade() {
 	case "$board" in
 	asus,rt-ax59u|\
 	asus,tuf-ax4200|\
-	asus,tuf-ax6000)
+	asus,tuf-ax6000|\
+	asus,zenwifi-bt8)
 		asus_initial_setup
 		;;
 	xiaomi,mi-router-ax3000t|\

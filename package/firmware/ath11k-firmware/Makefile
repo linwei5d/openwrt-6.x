@@ -8,9 +8,9 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ath11k-firmware
-PKG_SOURCE_DATE:=2025-01-14
-PKG_SOURCE_VERSION:=e3fbac20788f4cb10a47f8da052d6b5e809fcdf0
-PKG_MIRROR_HASH:=deb0a441d4a4b9d525874061bb1ebe9e4d06b609b378729db84d902fd47d0e09
+PKG_SOURCE_DATE:=2025-03-24
+PKG_SOURCE_VERSION:=f4564f5a0ceffc84322722bda7763aaf69d690f3
+PKG_MIRROR_HASH:=99a9406f312d0ed7cfd45de85ebf297470143d765dcaa02a87a42975bc865a04
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
@@ -32,6 +32,11 @@ define Package/ath11k-firmware-default
   DEPENDS:=
 endef
 
+define Package/ath11k-firmware-ipq5018
+$(Package/ath11k-firmware-default)
+  TITLE:=IPQ5018 ath11k firmware
+endef
+
 define Package/ath11k-firmware-ipq6018
 $(Package/ath11k-firmware-default)
   TITLE:=IPQ6018 ath11k firmware
@@ -42,6 +47,12 @@ $(Package/ath11k-firmware-default)
   TITLE:=IPQ8074 ath11k firmware
 endef
 
+define Package/ath11k-firmware-qcn6122
+$(Package/ath11k-firmware-default)
+  TITLE:=QCN6122 ath11k firmware
+  DEPENDS:=ath11k-firmware-ipq5018
+endef
+
 define Package/ath11k-firmware-qcn9074
 $(Package/ath11k-firmware-default)
   TITLE:=QCN9074 ath11k firmware
@@ -49,6 +60,11 @@ endef
 
 define Build/Compile
 
+endef
+
+define Package/ath11k-firmware-ipq5018/install
+	$(INSTALL_DIR) $(1)/lib/firmware/ath11k/IPQ5018/hw1.0
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/IPQ5018/hw1.0/* $(1)/lib/firmware/ath11k/IPQ5018/hw1.0/
 endef
 
 define Package/ath11k-firmware-ipq6018/install
@@ -61,11 +77,18 @@ define Package/ath11k-firmware-ipq8074/install
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/IPQ8074/hw2.0/* $(1)/lib/firmware/IPQ8074/
 endef
 
+define Package/ath11k-firmware-qcn6122/install
+	$(INSTALL_DIR) $(1)/lib/firmware/ath11k/QCN6122/hw1.0
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/QCN6122/hw1.0/* $(1)/lib/firmware/ath11k/QCN6122/hw1.0/
+endef
+
 define Package/ath11k-firmware-qcn9074/install
 	$(INSTALL_DIR) $(1)/lib/firmware/ath11k/QCN9074/hw1.0
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/QCN9074/hw1.0/* $(1)/lib/firmware/ath11k/QCN9074/hw1.0/
 endef
 
+$(eval $(call BuildPackage,ath11k-firmware-ipq5018))
 $(eval $(call BuildPackage,ath11k-firmware-ipq6018))
 $(eval $(call BuildPackage,ath11k-firmware-ipq8074))
+$(eval $(call BuildPackage,ath11k-firmware-qcn6122))
 $(eval $(call BuildPackage,ath11k-firmware-qcn9074))

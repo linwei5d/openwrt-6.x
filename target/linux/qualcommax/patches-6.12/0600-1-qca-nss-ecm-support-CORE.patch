@@ -81,7 +81,7 @@
  		     __be16 vlan_proto, u16 vlan_id)
 --- a/include/linux/netdevice.h
 +++ b/include/linux/netdevice.h
-@@ -2891,6 +2891,10 @@ enum netdev_cmd {
+@@ -2897,6 +2897,10 @@ enum netdev_cmd {
  	NETDEV_OFFLOAD_XSTATS_REPORT_USED,
  	NETDEV_OFFLOAD_XSTATS_REPORT_DELTA,
  	NETDEV_XDP_FEAT_CHANGE,
@@ -142,7 +142,7 @@
  #endif
 --- a/include/net/route.h
 +++ b/include/net/route.h
-@@ -245,6 +245,11 @@ struct rtable *rt_dst_alloc(struct net_d
+@@ -246,6 +246,11 @@ struct rtable *rt_dst_alloc(struct net_d
  			    unsigned int flags, u16 type, bool noxfrm);
  struct rtable *rt_dst_clone(struct net_device *dev, struct rtable *rt);
  
@@ -643,7 +643,7 @@
  	struct fib_table *tb;
 --- a/net/ipv6/ndisc.c
 +++ b/net/ipv6/ndisc.c
-@@ -668,6 +668,7 @@ void ndisc_send_ns(struct net_device *de
+@@ -670,6 +670,7 @@ void ndisc_send_ns(struct net_device *de
  	if (skb)
  		ndisc_send_skb(skb, daddr, saddr);
  }
@@ -663,7 +663,7 @@
  static inline const void *choose_neigh_daddr(const struct in6_addr *p,
  					     struct sk_buff *skb,
  					     const void *daddr)
-@@ -3874,6 +3877,10 @@ int ip6_route_add(struct fib6_config *cf
+@@ -3882,6 +3885,10 @@ int ip6_route_add(struct fib6_config *cf
  		return PTR_ERR(rt);
  
  	err = __ip6_ins_rt(rt, &cfg->fc_nlinfo, extack);
@@ -674,7 +674,7 @@
  	fib6_info_release(rt);
  
  	return err;
-@@ -3895,6 +3902,9 @@ static int __ip6_del_rt(struct fib6_info
+@@ -3903,6 +3910,9 @@ static int __ip6_del_rt(struct fib6_info
  	err = fib6_del(rt, info);
  	spin_unlock_bh(&table->tb6_lock);
  
@@ -684,7 +684,7 @@
  out:
  	fib6_info_release(rt);
  	return err;
-@@ -6358,6 +6368,20 @@ static int ip6_route_dev_notify(struct n
+@@ -6366,6 +6376,20 @@ static int ip6_route_dev_notify(struct n
  	return NOTIFY_OK;
  }
  
@@ -707,7 +707,7 @@
   */
 --- a/net/core/dev.c
 +++ b/net/core/dev.c
-@@ -1704,6 +1704,7 @@ const char *netdev_cmd_to_name(enum netd
+@@ -1737,6 +1737,7 @@ const char *netdev_cmd_to_name(enum netd
  	N(PRE_CHANGEADDR) N(OFFLOAD_XSTATS_ENABLE) N(OFFLOAD_XSTATS_DISABLE)
  	N(OFFLOAD_XSTATS_REPORT_USED) N(OFFLOAD_XSTATS_REPORT_DELTA)
  	N(XDP_FEAT_CHANGE)

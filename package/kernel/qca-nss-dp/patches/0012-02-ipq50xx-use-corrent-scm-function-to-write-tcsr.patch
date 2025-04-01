@@ -1,9 +1,14 @@
 From ba430b1a512dc1972807a1dd5a8d31a78ac572ff Mon Sep 17 00:00:00 2001
-From: hzy <hzyitc@outlook.com>
+From: Ziyang Huang <hzyitc@outlook.com>
 Date: Mon, 22 Apr 2024 21:49:18 +0800
-Subject: [PATCH 2/2] ipq50xx: use corrent scm function to write tcsr
+Subject: [PATCH] ipq50xx: use corrent scm function to write tcsr
 
-Signed-off-by: hzy <hzyitc@outlook.com>
+QCA leverages its own API function to write to the TCSR register space, 
+not available upstream. As such, convert to the upstream qcom SCM IO 
+write function.
+
+Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
 ---
  hal/soc_ops/ipq50xx/nss_ipq50xx.c | 9 ++-------
  1 file changed, 2 insertions(+), 7 deletions(-)
